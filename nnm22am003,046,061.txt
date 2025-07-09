@@ -1,0 +1,150 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+class BloodBank {
+private:
+    string bloodTypes[8] = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
+    int inventory[8] = {10, 8, 15, 7, 20, 5, 12, 6};
+    string donors[100];
+    string donorBloodTypes[100];
+    string requests[100];
+    int donorCount;
+    int requestCount;
+
+public:
+
+    BloodBank() : donorCount(0), requestCount(0) {}
+
+
+    void registerDonor(const string& name, const string& bloodType) {
+
+        int index = -1;
+        for (int i = 0; i < 8; i++) {
+            if (bloodTypes[i] == bloodType) {
+                index = i;
+                break;
+            }
+        }
+
+
+        if (index != -1) {
+            if (donorCount < 100) {
+                donors[donorCount] = name;
+                donorBloodTypes[donorCount] = bloodType;
+                inventory[index]++;
+                cout << name << " registered as a donor with blood type " << bloodType << ".\n";
+                donorCount++;
+            } else {
+                cout << "Donor list is full. Cannot register more donors.\n";
+            }
+        } else {
+            cout << "Invalid blood type.\n";
+        }
+    }
+
+
+    void requestBlood(const string& bloodType) {
+
+        int index = -1;
+        for (int i = 0; i < 8; i++) {
+            if (bloodTypes[i] == bloodType) {
+                index = i;
+                break;
+            }
+        }
+
+
+        if (index != -1 && inventory[index] > 0) {
+            inventory[index]--;
+            requests[requestCount] = bloodType;
+            cout << "One unit of " << bloodType << " blood has been provided.\n";
+            requestCount++;
+        } else {
+            cout << "Sorry, " << bloodType << " blood is not available.\n";
+        }
+    }
+
+    // Function to view current blood inventory
+    void viewInventory() const {
+        cout << "Current Blood Inventory:\n"; // Header for inventory display
+        // Loop through each blood type in the inventory
+        for (int i = 0; i < 8; i++) {
+            cout << bloodTypes[i] << ": " << inventory[i] << " units\n"; // Display blood type and quantity
+        }
+    }
+
+
+    void viewDonors() const {
+        cout << "Registered Donors:\n";
+        for (int i = 0; i < donorCount; i++) {
+            cout << donors[i] << " (Blood Type: " << donorBloodTypes[i] << ")\n";
+        }
+        if (donorCount == 0) {
+            cout << "No donors registered.\n";
+        }
+    }
+
+
+    void viewRequests() const {
+char name[10];
+        cout << "Blood Requests:\n";
+        for (int i = 0; i < requestCount; i++) {
+            cout << requests[i] << "\n";
+        }
+        if (requestCount == 0) {
+            cout << "No blood requests made.\n";
+        }
+    }
+};
+
+int main() {
+    BloodBank bloodBank;
+    int choice;
+
+
+    while (true) {
+        cout << "\nBlood Bank Management System \n";
+        cout << "1. Register Donor\n";
+        cout << "2. Request Blood\n";
+        cout << "3. View Inventory\n";
+        cout << "4. View Donors\n";
+        cout << "5. View Requests\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+
+        if (choice == 1) {
+            string name, bloodType;
+            cout << "Enter donor's name: ";
+            cin.ignore();
+            getline(cin, name);
+            cout << "Enter blood type (e.g., A+, O-): ";
+            getline(cin, bloodType);
+            bloodBank.registerDonor(name, bloodType);
+        } else if (choice == 2) {
+            string bloodType;
+            char name[10];
+            cout<<"enter name:";
+            cin>>name;
+            cout << "Enter blood type you want to request: ";
+            cin.ignore();
+            getline(cin, bloodType);
+            bloodBank.requestBlood(bloodType);
+        } else if (choice == 3) {
+            bloodBank.viewInventory();
+        } else if (choice == 4) {
+            bloodBank.viewDonors();
+        } else if (choice == 5) {
+            bloodBank.viewRequests();
+        } else if (choice == 6) {
+            cout << "Exiting the system. Thank you!\n";
+            break;
+        } else {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+
+    return 0;
+}
