@@ -55,7 +55,7 @@ This method iterates through the donors array and displays the name and blood ty
 of each donor.
 If no donors are registered, it displays a message stating that there are no donors.
 
-Viewing Blood Requests (viewRequests):
+- Viewing Blood Requests (viewRequests):
 Similar to the viewDonors method, this method iterates through requests to display
 each blood type that has been requested.
 If no requests are recorded, it displays a message indicating this.
